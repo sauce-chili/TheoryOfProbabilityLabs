@@ -1,6 +1,6 @@
 ## Installation
 Открываем терминал и переходим в директорию для python проектов.
-Копируем репозиторий
+Копируем репозиторий:
 ```sh
 git clone https://github.com/sauce-chili/TheoryOfProbabilityLabs.git
 ```
@@ -10,15 +10,15 @@ cd TheoryOfProbabilityLabs
 ```
 ## Building
 ```sh
-python -m venv venv
-.\venv\Scripts\activate
+python -m venv .venv
+.\.venv\Scripts\activate
 ```
 Устанавливаем необходимые пакеты:
 ```sh
 pip install -r requirements.txt
 ```
 ## Run
-Для запуска проект из консоли используем команду:
+Для запуска проекта из консоли используем команду:
 ```sh
 python app.py
 ```
