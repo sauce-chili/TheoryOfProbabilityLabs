@@ -4,7 +4,7 @@ from typing import Callable
 
 from PyQt5 import uic
 from PyQt5.QtGui import QFont, QPixmap
-from PyQt5.QtWidgets import QSpinBox, QHBoxLayout, QErrorMessage
+from PyQt5.QtWidgets import QSpinBox, QHBoxLayout, QErrorMessage, QWidget
 
 from core.formulas.combinatorics import (
     accommodations_with_rep,
@@ -61,8 +61,8 @@ class Lab1(TaskView):
         self.calculate_btn.clicked.connect(self.__on_clicked_calculate_button)
 
     def __on_formula_changed(self, index_of_formula: int):
-        # Отобразить все формулы
-        self.__show_formulas()
+        # Скрыть все формулы
+        self.__set_formulas_visibility(visibility=False)
         # Отобразить все параметры
         self.__show_of_all_parameters()
         # Обработка выбранной формулы
@@ -128,10 +128,14 @@ class Lab1(TaskView):
 
         return kwargs
 
-    def __show_formulas(self):
-        self.formula_combinations_without_rep.hide()
-        self.formula_permutations_with_rep.hide()
-        self.formula_accommodations_with_rep.hide()
+    def __set_formulas_visibility(self, visibility=True):
+
+        set_visibility: Callable[[QWidget], None] = \
+            lambda qw: qw.show() if visibility else qw.hide()
+
+        set_visibility(self.formula_combinations_without_rep)
+        set_visibility(self.formula_permutations_with_rep)
+        set_visibility(self.formula_accommodations_with_rep)
 
     def __update_m_params_scroll_bar(self):
         count = self.k_count.value()
