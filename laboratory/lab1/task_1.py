@@ -15,11 +15,11 @@ from utils.paths import resolve_path
 from widgets import TaskView
 
 
-class Lab1(TaskView):
+class Task1(TaskView):
     __limit_label: str = "Ограничения:\n"
-    __limit_of_combinations_without_rep: str = __limit_label + "В данной формуле m <= n"
+    __limit_of_combinations_without_rep: str = __limit_label + "В данной формуле n должно быть больше m"
     __limit_of_accommodations_with_rep: str = __limit_label + "В данной формуле нет ограничений"
-    __limit_of_permutationsWithRep: str = __limit_label + "В данной формуле (m1 + m2 + ... + mk) = n И k <= n"
+    __limit_of_permutationsWithRep: str = __limit_label + "В данной формуле (m1 + m2 + ... + mk) = n И k не больше n"
 
     __count_m_param_in_scroll_bar = 1  # TODO мб нахер не нужно и будет вытягивать значение c ui
 
@@ -40,7 +40,7 @@ class Lab1(TaskView):
         }
 
     def __init_ui(self):
-        uic.loadUi(resolve_path("ui/lab_1.ui"), self)
+        uic.loadUi(resolve_path("ui/lab_1_task_1.ui"), self)
 
         self.__load_formulas_images()
 
@@ -206,4 +206,4 @@ class Lab1(TaskView):
         self.result.setText(str(result))
 
     def task_name(self):
-        return "Элементы комбинаторики. Классическое определение вероятности"
+        return "Задача 1"

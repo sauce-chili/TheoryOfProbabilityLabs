@@ -4,7 +4,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 from utils.paths import resolve_path
 from widgets import TaskView
-from tasks import labs, lab_names
+from laboratory import labs, lab_names
 
 
 class LabsWindow(QMainWindow):
@@ -20,7 +20,7 @@ class LabsWindow(QMainWindow):
 
     def on_lab_selected(self, index):
         lab_num = int(self.labSelect.currentText().split(".")[0])
-        # print(labs)
+        # print(laboratory)
         # print(self.taskView)
         if self._last_lab_num is not None:
             for view in labs[self._last_lab_num]:
