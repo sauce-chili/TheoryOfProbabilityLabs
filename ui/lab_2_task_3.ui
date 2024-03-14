@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1578</width>
+    <height>1084</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_4">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="text_of_task">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>pics_lab_2/text_of_task.png</pixmap>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Введите n:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="n_count">
+         <property name="maximum">
+          <number>1000</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Введите m1:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="m1_count"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Введите m2:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="m2_count"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_10">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Вероятность события H1 - первый студент ответит не менее, чем на два вопроса:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="h1_formula">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap>pics_lab_2/h1.png</pixmap>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="h1_probability">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_11">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Вероятность события H2 - второй студент ответит не менее, чем на два вопроса:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="h2_formula">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap>pics_lab_2/h2.png</pixmap>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="h2_probability">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>Вероятность события A1 - не менее, чем на два вопроса правильно ответят оба студента: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="a1_formula">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap>pics_lab_2/punkt_a.png</pixmap>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="a1_probability">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>Вероятность события A2 - не менее, чем на два вопроса правильно ответит только первый студент: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="a2_formula">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap>pics_lab_2/punct_b.png</pixmap>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="a2_probability">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <item>
+        <widget class="QLabel" name="label_17">
+         <property name="text">
+          <string>Вероятность события H3- не менее, чем на два вопроса правильно ответит только второй студент: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="h3_formula">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap>pics_lab_2/h3.png</pixmap>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="h3_probability">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Вероятность события A3 - не менее, чем на два вопроса правильно ответит только один из студентов: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="a3_formula">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap>pics_lab_2/punct_c.png</pixmap>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="a3_probability">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <item>
+        <widget class="QLabel" name="label_15">
+         <property name="text">
+          <string>Вероятность события A4 - не менее, чем на два вопроса правильно ответит хотя бы один из студентов: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="a4_formula">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap>pics_lab_2/punct_d.png</pixmap>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="a4_probability">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="calculate_button">
+       <property name="text">
+        <string>Вычислить</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
