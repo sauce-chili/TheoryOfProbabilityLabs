@@ -3,7 +3,7 @@ from PyQt5 import uic
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 from utils.paths import resolve_path
-from widgets import TaskView
+from utils.widgets import TaskView
 from laboratory import labs, lab_names
 
 
