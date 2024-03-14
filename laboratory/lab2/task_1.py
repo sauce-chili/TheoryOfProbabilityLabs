@@ -2,7 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
 
 from utils.paths import resolve_path
-from widgets import TaskView
+from utils.widgets import TaskView
 
 
 class Task1(TaskView):

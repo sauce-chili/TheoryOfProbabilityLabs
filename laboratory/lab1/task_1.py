@@ -12,7 +12,7 @@ from core.formulas.combinatorics import (
     permutations_with_rep
 )
 from utils.paths import resolve_path
-from widgets import TaskView
+from utils.widgets import TaskView
 
 
 class Task1(TaskView):
@@ -51,9 +51,9 @@ class Task1(TaskView):
         self.formula_permutations_with_rep.hide()
 
     def __load_formulas_images(self):
-        self.formula_combinations_without_rep.setPixmap(QPixmap(resolve_path('res/images/lab1_formula1.png')))
-        self.formula_accommodations_with_rep.setPixmap(QPixmap(resolve_path('res/images/lab1_formula2.png')))
-        self.formula_permutations_with_rep.setPixmap(QPixmap(resolve_path('res/images/lab1_formula3.png')))
+        self.formula_combinations_without_rep.setPixmap(QPixmap(resolve_path('res/images/lab1/lab1_formula1.png')))
+        self.formula_accommodations_with_rep.setPixmap(QPixmap(resolve_path('res/images/lab1/lab1_formula2.png')))
+        self.formula_permutations_with_rep.setPixmap(QPixmap(resolve_path('res/images/lab1/lab1_formula3.png')))
 
     def __bind_listener(self):
         self.formula_selector.currentIndexChanged.connect(self.__on_formula_changed)

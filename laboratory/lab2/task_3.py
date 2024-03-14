@@ -1,11 +1,10 @@
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QErrorMessage
 
 from core.formulas.combinatorics import combinations_without_rep as C_mn
 from utils.paths import resolve_path
 from utils.qt_utlis import show_error
-from widgets import TaskView
+from utils.widgets import TaskView
 
 
 class Task3(TaskView):
@@ -50,12 +49,14 @@ class Task3(TaskView):
             return
 
         P_a1 = P_h1_m1 * P_h2_m2
+
         P_a2 = P_h1_m1 * (1 - P_h2_m2)
 
         P_h3 = (1 - P_h1_m1) * P_h2_m2
 
-        P_a3 = P_h1_m1 + P_h3
-        P_a4 = P_a1 + P_a3
+        P_a3 = P_a2 + P_h3
+
+        P_a4 = 1 - (1 - P_h1_m1) * (1 - P_h2_m2)
 
         self.h1_probability.setText(str(P_h1_m1))
         self.h2_probability.setText(str(P_h2_m2))

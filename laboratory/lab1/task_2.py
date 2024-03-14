@@ -9,7 +9,7 @@ from core.formulas.combinatorics import (
     accommodations_without_rep
 )
 from utils.paths import resolve_path
-from widgets import TaskView
+from utils.widgets import TaskView
 
 
 class Task2(TaskView):

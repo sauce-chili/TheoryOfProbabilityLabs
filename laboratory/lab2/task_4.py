@@ -3,7 +3,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QDoubleSpinBox, QHBoxLayout, QLabel, QCheckBox
 
 from utils.paths import resolve_path
-from widgets import TaskView
+from utils.widgets import TaskView
 
 
 class Task4(TaskView):
