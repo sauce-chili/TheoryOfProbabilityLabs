@@ -69,7 +69,7 @@ class Task3(TaskView):
     def __calculate_ph_m(self, n: int, m: int) -> float:
         # Вероятность, что студент ответит не менее чем на два вопроса из n билетов, при условии, что выучил m
         return (
-                (C_mn(2, m) * C_mn(1, n - m) + C_mn(3, m))
+                (C_mn(2, m) * (n - m) + C_mn(3, m))
                 /
                 (C_mn(3, n))
         )
