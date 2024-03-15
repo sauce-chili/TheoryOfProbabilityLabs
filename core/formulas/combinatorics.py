@@ -1,5 +1,5 @@
-from math import factorial
 from functools import reduce
+from math import factorial
 
 
 def permutation_without_rep(n: int) -> int:
