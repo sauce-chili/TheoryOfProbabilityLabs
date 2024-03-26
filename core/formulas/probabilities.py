@@ -1,5 +1,5 @@
-from decimal import Decimal
 from functools import reduce
+from math import sqrt, pi, erf
 
 from core.formulas.combinatorics import (
     combinations_without_rep as C,
@@ -23,3 +23,11 @@ def polynomial_distribution(n: int, m: list[float], p: list[float]) -> float:
     if len(m) != len(p):
         raise ValueError("Sizes of m and p must be equal")
     return rP(n, m) * reduce(lambda x, y: x * y, (p[i] ** m[i] for i in range(len(m))))
+
+
+def local_moivre_laplace(x: float, n: int, p: float) -> float:
+    return laplace(x) / sqrt(n * p * (1 - p))
+
+
+def laplace(x: float) -> float:
+    return (1 / sqrt(2 * pi)) * erf(-(x ** 2 / 2))

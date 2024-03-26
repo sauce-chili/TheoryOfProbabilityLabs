@@ -10,7 +10,7 @@ class Task4(TaskView):
     def __init__(self, task_number: int, parent):
         super().__init__(parent)
         self._task_number: int = task_number
-        uic.loadUi(resolve_path('ui/lab2_task_4.ui'), self)
+        uic.loadUi(resolve_path('ui/lab_2_task_4.ui'), self)
 
         self._count_of_events = 2
 
