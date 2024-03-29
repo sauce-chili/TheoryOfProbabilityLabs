@@ -1,5 +1,5 @@
 from functools import reduce
-from math import sqrt, pi, erf
+from math import sqrt, pi, exp
 
 from core.formulas.combinatorics import (
     combinations_without_rep as C,
@@ -11,7 +11,7 @@ def bernoulli(p: float, n: int, min_successes: int, max_successes: int | None = 
     if max_successes is None:
         max_successes = min_successes
 
-    result = 0
+    result = 0.0
     q = 1 - p
     for count_of_successes in range(min_successes, max_successes + 1):
         result += C(count_of_successes, n) * (p ** count_of_successes) * (q ** (n - count_of_successes))
@@ -30,4 +30,4 @@ def local_moivre_laplace(x: float, n: int, p: float) -> float:
 
 
 def laplace(x: float) -> float:
-    return (1 / sqrt(2 * pi)) * erf(-(x ** 2 / 2))
+    return (1 / sqrt(2 * pi)) * exp(-((x ** 2) / 2))
