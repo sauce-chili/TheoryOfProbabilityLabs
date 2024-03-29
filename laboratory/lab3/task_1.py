@@ -1,16 +1,15 @@
 from typing import Callable
-from decimal import Decimal, getcontext
 
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtWidgets import QSpinBox, QHBoxLayout, QDoubleSpinBox
 
-from utils.paths import resolve_path
-from utils.widgets import TaskView
 from core.formulas.probabilities import (
     bernoulli,
     polynomial_distribution
 )
+from utils.paths import resolve_path
+from utils.widgets import TaskView
 
 
 class Task1(TaskView):
@@ -48,6 +47,9 @@ class Task1(TaskView):
         self.bernulli_in_range.clicked.connect(self.__on_selected_bernoulli_in_range)
 
         self.polynomial_k_count.valueChanged.connect(self.__update_polynomial_params_in_scrollbar)
+        self.bernoulli_n_count.valueChanged.connect(lambda val: self.bernulli_m_2.setMaximum(val))
+        self.bernulli_m_2.valueChanged.connect(lambda val: self.bernulli_m_1.setMaximum(val))
+        self.bernulli_m_1.valueChanged.connect(lambda val: self.bernulli_m_2.setMinimum(val))
 
         self.calculate_btn.clicked.connect(self.__on_clicked_calculate_button)
 
@@ -61,6 +63,10 @@ class Task1(TaskView):
         self.formula_view.show()
         self.__current_calculated_func = bernoulli
 
+        self.limits_of_formula.setText(
+            "Ограничения: m<=n"
+        )
+
     def __on_bernoulli_polynomial_formula_selected(self):
         self.polynomial_param_sidebar.show()
         self.formula_img.setPixmap(QPixmap(
@@ -69,6 +75,11 @@ class Task1(TaskView):
         self.bernoulli_params.hide()
         self.bernulli_type_set.hide()
         self.formula_view.hide()
+
+        self.limits_of_formula.setText(
+            "Ограничения: m<sub>1</sub> + m<sub>2</sub> + ... m<sub>k</sub> = n"
+        )
+        self.limits_of_formula.show()
 
         self.__current_param_collector = lambda: {
             "n": self.polynomial_n_count.value(),
@@ -186,7 +197,6 @@ class Task1(TaskView):
         except ValueError as ve:
             print(ve)
             print(kwargs)
-            # TODO дописать обработку ошибок при вычислениях
             return
 
         self.result.setText(f"{result}")

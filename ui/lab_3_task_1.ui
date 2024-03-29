@@ -177,7 +177,6 @@
            <font>
             <family>Arial</family>
             <pointsize>12</pointsize>
-            <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
            </font>
@@ -221,7 +220,6 @@
                  <font>
                   <family>Arial</family>
                   <pointsize>12</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -303,7 +301,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap>../../../../../images/lab1_formula2.png</pixmap>
+          <pixmap>../../../../images/lab1_formula2.png</pixmap>
          </property>
         </widget>
        </item>
@@ -315,7 +313,6 @@
             <property name="font">
              <font>
               <pointsize>18</pointsize>
-              <weight>50</weight>
               <bold>false</bold>
              </font>
             </property>

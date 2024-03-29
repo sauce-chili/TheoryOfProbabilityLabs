@@ -40,7 +40,6 @@
      <property name="font">
       <font>
        <pointsize>16</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -137,7 +136,7 @@
              </font>
             </property>
             <property name="minimum">
-             <number>1</number>
+             <number>100</number>
             </property>
             <property name="maximum">
              <number>200000</number>
@@ -223,16 +222,16 @@
              <number>3</number>
             </property>
             <property name="minimum">
-             <double>0.001000000000000</double>
+             <double>0.100000000000000</double>
             </property>
             <property name="maximum">
-             <double>1.000000000000000</double>
+             <double>0.900000000000000</double>
             </property>
             <property name="singleStep">
              <double>0.010000000000000</double>
             </property>
             <property name="value">
-             <double>1.000000000000000</double>
+             <double>0.900000000000000</double>
             </property>
            </widget>
           </item>
@@ -276,14 +275,17 @@
             <property name="decimals">
              <number>3</number>
             </property>
+            <property name="minimum">
+             <double>0.100000000000000</double>
+            </property>
             <property name="maximum">
-             <double>0.999000000000000</double>
+             <double>0.900000000000000</double>
             </property>
             <property name="singleStep">
              <double>0.010000000000000</double>
             </property>
             <property name="value">
-             <double>0.000000000000000</double>
+             <double>0.100000000000000</double>
             </property>
            </widget>
           </item>
@@ -314,7 +316,6 @@
             <property name="font">
              <font>
               <pointsize>14</pointsize>
-              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
