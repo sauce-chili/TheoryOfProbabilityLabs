@@ -6,7 +6,7 @@ from PyQt5.QtGui import QPixmap
 from core.formulas.probabilities import (
     bernoulli,
     local_moivre_laplace,
-    laplace
+    gauss
 )
 from utils.paths import resolve_path
 from utils.qt_utlis import show_error
@@ -57,11 +57,11 @@ class Task2(TaskView):
         msg = ''
         if n * p * q <= 9:
             msg = 'Произведение npq должно быть больше 9'
-        elif laplace(-x) != laplace(x):
+        elif gauss(-x) != gauss(x):
             msg = (f'Не выполняется четность φ(-x)=φ(x).\n'
                    f'В данный момент:\n'
-                   f'φ(-x)={laplace(-x)}\n'
-                   f'φ(x)={laplace(x)}')
+                   f'φ(-x)={gauss(-x)}\n'
+                   f'φ(x)={gauss(x)}')
 
         if msg == '': return True
 

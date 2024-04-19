@@ -9,12 +9,14 @@ from core.formulas.probabilities import (
     polynomial_distribution
 )
 from utils.paths import resolve_path
+from utils.qt_utlis import show_error
 from utils.widgets import TaskView
 
 
 class Task1(TaskView):
     __current_param_collector: Callable[[], dict] | None = None
     __current_calculated_func: Callable[..., float] | None = None
+    __current_restriction_checker: Callable[[], bool] | None = None
 
     __count_params_in_scrollbar = 1
 
@@ -47,6 +49,7 @@ class Task1(TaskView):
         self.bernulli_in_range.clicked.connect(self.__on_selected_bernoulli_in_range)
 
         self.polynomial_k_count.valueChanged.connect(self.__update_polynomial_params_in_scrollbar)
+
         self.bernoulli_n_count.valueChanged.connect(lambda val: self.bernulli_m_2.setMaximum(val))
         self.bernulli_m_2.valueChanged.connect(lambda val: self.bernulli_m_1.setMaximum(val))
         self.bernulli_m_1.valueChanged.connect(lambda val: self.bernulli_m_2.setMinimum(val))
@@ -64,8 +67,13 @@ class Task1(TaskView):
         self.__current_calculated_func = bernoulli
 
         self.limits_of_formula.setText(
-            "Ограничения: m<=n"
+            "Ограничения: m<= n."
         )
+        self.__current_restriction_checker = self.__check_restrictions_bernoulli_formula
+        self.__on_selected_bernoulli_equal()
+
+    def __check_restrictions_bernoulli_formula(self) -> bool:
+        return True  # not required due to restrictions set in the ui
 
     def __on_bernoulli_polynomial_formula_selected(self):
         self.polynomial_param_sidebar.show()
@@ -77,7 +85,8 @@ class Task1(TaskView):
         self.formula_view.hide()
 
         self.limits_of_formula.setText(
-            "Ограничения: m<sub>1</sub> + m<sub>2</sub> + ... m<sub>k</sub> = n"
+            "Ограничения:m<sub>1</sub> + m<sub>2</sub> + ... + m<sub>k</sub> = n. " +
+            "p<sub>1</sub> + p<sub>2</sub> + ... + p<sub>k</sub = 1"
         )
         self.limits_of_formula.show()
 
@@ -87,6 +96,26 @@ class Task1(TaskView):
             "p": [getattr(self, f"p_{num}").value() for num in range(1, self.__count_params_in_scrollbar + 1)]
         }
         self.__current_calculated_func = polynomial_distribution
+        self.__current_restriction_checker = self.__check_restrictions_bernoulli_polynomial_formula
+
+    def __check_restrictions_bernoulli_polynomial_formula(self) -> bool:
+
+        msg = ''
+        param = self.__current_param_collector()
+        n, m, p = param["n"], param["m"], param["p"]
+        if sum(m) != n:
+            msg = "Не выполняется условие m<sub>1</sub> + m<sub>2</sub> + ... + m<sub>k</sub> = n"
+        elif sum(p) != 1:
+            msg = "Вероятности p<sub>1</sub> + p<sub>2</sub> + ... + p<sub>k</sub> ≠ 1. Не образуется полная группа событий."
+
+        if msg == '': return True
+
+        show_error(
+            title="Ошибка",
+            message=msg
+        )
+
+        return False
 
     def __on_selected_bernoulli_equal(self):
         self.bernulli_m_1.hide()
@@ -191,6 +220,10 @@ class Task1(TaskView):
         delattr(self, f'p_{num}')
 
     def __on_clicked_calculate_button(self):
+
+        if not self.__current_restriction_checker():
+            return
+
         kwargs: dict = self.__current_param_collector()
         try:
             result: float = self.__current_calculated_func(**kwargs)

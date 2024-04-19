@@ -26,8 +26,8 @@ def polynomial_distribution(n: int, m: list[float], p: list[float]) -> float:
 
 
 def local_moivre_laplace(x: float, n: int, p: float) -> float:
-    return laplace(x) / sqrt(n * p * (1 - p))
+    return gauss(x) / sqrt(n * p * (1 - p))
 
 
-def laplace(x: float) -> float:
+def gauss(x: float) -> float:
     return (1 / sqrt(2 * pi)) * exp(-((x ** 2) / 2))
