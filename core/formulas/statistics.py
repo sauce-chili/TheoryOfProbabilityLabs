@@ -1,7 +1,8 @@
 from collections import Counter
-from math import sqrt, erf, pi, exp
+from math import sqrt, erf, pi, exp, ceil, floor
 from dataclasses import dataclass
 from typing import Dict, List
+from scipy.integrate import quad as oIntegral
 
 
 # 🗿
@@ -53,7 +54,7 @@ def process_discrete_data(data) -> DiscreteData:
         Dv += (xi - Xv) ** 2 * x_n[xi]
     Dv /= sum_n
     # Среднее квадратическое отклонение
-    sigma = sqrt(Dv)
+    sigma = sqrt(Dv)  # TODO сделать
     # Исправленное среднее квадратическое отклонение
     S = 0
     for xi in x_n:
@@ -65,7 +66,7 @@ def process_discrete_data(data) -> DiscreteData:
 
 # 🗿
 def process_continuous_data(data, count) -> ContinuousData:
-    h = (max(data) - min(data)) / count
+    length_of_interval = (max(data) - min(data)) / count
     xmax = max(data)
     sorted_uniq_data = list(sorted(set(data)))
     intervals = []
@@ -73,11 +74,11 @@ def process_continuous_data(data, count) -> ContinuousData:
     N = []
     W = []
     # Интервалы и их середины
-    number = min(data)
+    left_border = min(data)
     for i in range(count):
-        right_border = round(min(number + h, xmax), 3)
-        intervals.append([number, right_border])
-        middles.append(round(number + round((right_border - number) / 2, 3), 3))
+        right_border = round(min(left_border + length_of_interval, xmax), 3)
+        intervals.append([left_border, right_border])
+        middles.append(round(left_border + round((right_border - left_border) / 2, 3), 3))
 
         # Частота для интервалов
         interval_count = 0
@@ -85,87 +86,101 @@ def process_continuous_data(data, count) -> ContinuousData:
             if i == count - 1:
                 right_border += 1
 
-            if number <= val < right_border:
+            if left_border <= val < right_border:
                 interval_count += 1
         N.append(interval_count)
-        number = round(number + h, 3)
+        left_border = round(left_border + length_of_interval, 3)
 
     # Проверка частот для интервалов
-    Nsum = sum(N)
-    assert len(data) == Nsum
+    assert sum(N) == len(data)
 
     # Относительная частота для интервалов
-    for ni in N:
-        W.append(ni / Nsum)
+    W = calculate_W(N)
 
     # Среднее выборочное
+    Xv = calculate_Xv(middles, N)
+
+    # Выборочная дисперсия
+    Dv = calculate_Dv(Xv, N, middles)
+
+    # Среднее квадратическое отклонение
+    sigma = calculate_sigma(Dv)
+
+    # Исправленное среднее квадратическое отклонение
+    S = calculate_S(Xv, N, middles)
+
+    return ContinuousData(intervals, N, W, middles, Xv, sigma, Dv, S, length_of_interval)
+
+
+def calculate_W(N=[]):
+    N_total = sum(N)
+    W = []
+    for ni in N:
+        W.append(ni / N_total)
+
+    return W
+
+
+def calculate_Xv(middles=[], N=[]):  # TODO сделать
     Xv = 0
     for i, xi in enumerate(middles):
         Xv += xi * N[i]
-    Xv /= Nsum
+    Xv /= sum(N)
+    return Xv
 
-    # Выборочная дисперсия
+
+def calculate_Dv(Xv, N=[], middles=[]):
     Dv = 0
     for i, xi in enumerate(middles):
         Dv += (xi - Xv) ** 2 * N[i]
-    Dv /= Nsum
+    Dv /= sum(N)
+    return Dv
 
-    # Среднее квадратическое отклонение
-    sigma = sqrt(Dv)
 
-    # Исправленное среднее квадратическое отклонение
-    S = 0
+def calculate_sigma(Dv):
+    return sqrt(Dv)
+
+
+def calculate_S(Xv, N=[], middles=[]):
+    S_square = 0
     for i, xi in enumerate(middles):
-        S += (xi - Xv) ** 2 * N[i]
-    S /= Nsum - 1
-    S = sqrt(S)
-    return ContinuousData(intervals, N, W, middles, Xv, sigma, Dv, S, h)
+        S_square += (xi - Xv) ** 2 * N[i]
+    S_square /= sum(N) - 1
+    return sqrt(S_square)
 
 
-def process_continuous_intervals(interAndN: ContinuousData) -> ContinuousData:
-    for i in interAndN.intervals:
+def process_continuous_intervals(data_split_by_intervals: ContinuousData) -> ContinuousData:
+    for i in data_split_by_intervals.intervals:
         mid = (i[1] - i[0]) / 2 + i[0]
-        interAndN.middles.append(mid)
+        data_split_by_intervals.middles.append(mid)
 
     #   Относительные частоты
-    W = []
-    Nsum = sum(interAndN.N)
-    for ni in interAndN.N:
-        W.append(ni / Nsum)
-    interAndN.W = W
+    data_split_by_intervals.W = calculate_W(data_split_by_intervals.N)
 
     # Среднее выборочное
-    Xv = 0
-    for i, xi in enumerate(interAndN.middles):
-        Xv += xi * interAndN.N[i]
-    Xv /= Nsum
+    Xv = calculate_Xv(data_split_by_intervals.middles, data_split_by_intervals.N)
 
     # Выборочная дисперсия
-    Dv = 0
-    for i, xi in enumerate(interAndN.middles):
-        Dv += (xi - Xv) ** 2 * interAndN.N[i]
-    Dv /= Nsum
+    Dv = calculate_Dv(Xv, data_split_by_intervals.N, data_split_by_intervals.middles)
 
     # Среднее квадратическое отклонение
-    sigma = sqrt(Dv)
+    sigma = calculate_sigma(Dv)
 
     # Исправленное среднее квадратическое отклонение
-    S = 0
-    for i, xi in enumerate(interAndN.middles):
-        S += (xi - Xv) ** 2 * interAndN.N[i]
-    S /= Nsum - 1
-    S = sqrt(S)
-    h = interAndN.intervals[0][1] - interAndN.intervals[0][0]
+    S = calculate_S(Xv, data_split_by_intervals.N, data_split_by_intervals.middles)
+
+    length_of_interval = data_split_by_intervals.intervals[0][1] - data_split_by_intervals.intervals[0][0]
+
     return ContinuousData(
-        interAndN.intervals,
-        interAndN.N,
-        interAndN.W,
-        interAndN.middles,
+        data_split_by_intervals.intervals,
+        data_split_by_intervals.N,
+        data_split_by_intervals.W,
+        data_split_by_intervals.middles,
         Xv,
         sigma,
         Dv,
         S,
-        h,
+        length_of_interval,
     )
 
 
@@ -268,19 +283,27 @@ def process_discrete_plot_data(discrete_data: DiscreteData):
     return plot_data
 
 
+def integrand(x):
+    return exp(-((x ** 2) / 2))
+
+
 def normal_theorethical_probability(interval, a, sigma):
-    t2 = (interval[1] - a) / sigma
-    t1 = (interval[0] - a) / sigma
-    return 0.5 * (erf(t2 / sqrt(2)) - erf(t1 / sqrt(2)))
+    l_integral_border = (interval[0] - a) / sigma
+    r_integral_border = (interval[1] - a) / sigma
+    integral, rounding = oIntegral(integrand, l_integral_border, r_integral_border)
+    return (1 / sqrt(2 * pi)) * integral
 
 
 def process_normal_density(a, sigma):
-    density = lambda x, a, sigma: (1 / (sqrt(2 * pi) * sigma)) * exp(-(((x - a) ** 2) / (2 * sigma ** 2)))
+    density = lambda x, a, sigma: (
+            (1 / (sqrt(2 * pi) * sigma)) * exp(-(((x - a) ** 2) / (2 * sigma ** 2)))
+    )
     x = [i for i in range(int(a) - 50, int(a) + 50)]
     y = [density(xi, a, sigma) for xi in x]
     return x, y
 
 
+# Считает наблюдаемое значение критерия
 def normal_chi2(m, a, sigma, data: ContinuousData):
     value = 0
     n = sum(data.N)
@@ -290,21 +313,51 @@ def normal_chi2(m, a, sigma, data: ContinuousData):
     return value
 
 
-def indicative_theorethical_probability(interval, lambda_):
-    return exp(-(lambda_ * interval[0])) - exp(-(lambda_ * interval[1]))
+def theoretical_probability_of_evenly(interval, a, b):
+    return (interval[1] - interval[0]) / (b - a)
 
 
-def process_indicative_density(lambda_):
-    density = lambda x, lambda_: 0 if x < 0 else lambda_ * exp(-(lambda_ * x))
-    x = [i for i in range(1, 100)]
-    y = [density(xi, lambda_) for xi in x]
+def evenly_process_density(a, b):
+    return 1 / (b - a)
+
+
+def prepare_evenly_process_density_plots(a, b, intervals=[]):
+    Xmin = intervals[0][0]
+    Xmax = intervals[len(intervals) - 1][1]
+    density = evenly_process_density(Xmin, Xmax)
+    x = [Xmin, Xmax]
+    y = [density for xi in x]
     return x, y
 
 
-def indicative_chi2(m, lambda_, data: ContinuousData):
+def theoretical_frequencies_of_evenly(N_total, a, b, intervals=[]):
+    n = []
+    density = evenly_process_density(intervals[0][0], intervals[len(intervals) - 1][1])
+    n_current = N_total * density * (intervals[0][1] - a)
+    n.append(n_current)
+    for i in range(1, len(intervals) - 1):
+        n_current = N_total * density * (intervals[i][1] - intervals[i - 1][1])
+        n.append(n_current)
+    if len(intervals) > 1:
+        n_current = N_total * density * (b - intervals[len(intervals) - 2][1])
+        n.append(n_current)
+    return n
+
+
+def evenly_chi2(a, b, data: ContinuousData):
     value = 0
+    n_theoretical = []
+    n_theoretical = theoretical_frequencies_of_evenly(sum(data.N), a, b, data.intervals)
     n = sum(data.N)
-    for i in range(m):
-        npi = n * indicative_theorethical_probability(data.intervals[i], lambda_)
-        value += ((data.N[i] - npi) ** 2) / npi
+    for i in range(len(data.intervals)):
+        chi_square = ((data.N[i] - n_theoretical[i]) ** 2) / data.N[i]
+        value += chi_square
     return value
+
+
+def calculate_a_in_evenly_distribution(Xv, sigma):
+    return Xv - (sqrt(3) * sigma)
+
+
+def calculate_b_in_evenly_distribution(Xv, sigma):
+    return Xv + (sqrt(3) * sigma)

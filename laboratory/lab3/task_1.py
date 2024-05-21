@@ -13,6 +13,7 @@ from utils.qt_utlis import show_error
 from utils.widgets import TaskView
 
 
+
 class Task1(TaskView):
     __current_param_collector: Callable[[], dict] | None = None
     __current_calculated_func: Callable[..., float] | None = None
