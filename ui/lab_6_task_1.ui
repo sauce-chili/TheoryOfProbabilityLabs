@@ -33,8 +33,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>971</width>
-        <height>770</height>
+        <width>975</width>
+        <height>774</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_69">
@@ -289,7 +289,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>5</number>
          </property>
          <property name="elideMode">
           <enum>Qt::ElideNone</enum>
@@ -315,7 +315,7 @@
           </attribute>
           <layout class="QHBoxLayout" name="horizontalLayout_48">
            <item>
-            <widget class="QLabel" name="continuous_parameters_formula">
+            <widget class="QLabel" name="main_parameters_formulas">
              <property name="text">
               <string/>
              </property>
@@ -720,6 +720,25 @@
                 </layout>
                </item>
                <item>
+                <widget class="QLabel" name="label_10">
+                 <property name="font">
+                  <font>
+                   <pointsize>18</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>=</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="avg_selected_formula">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QLabel" name="label_44">
                  <property name="font">
                   <font>
@@ -806,6 +825,25 @@
                   </spacer>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_11">
+                 <property name="font">
+                  <font>
+                   <pointsize>18</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>=</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="sigma_formula">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_47">
@@ -915,7 +953,7 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
-              <widget class="QLabel" name="label_10">
+              <widget class="QLabel" name="pi_normal_formula">
                <property name="text">
                 <string/>
                </property>
@@ -1207,7 +1245,7 @@
               </layout>
              </item>
              <item>
-              <widget class="QLabel" name="label_11">
+              <widget class="QLabel" name="observed_value">
                <property name="text">
                 <string/>
                </property>

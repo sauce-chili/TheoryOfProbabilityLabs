@@ -1,3 +1,5 @@
+from PyQt5.QtGui import QPixmap
+
 from utils.widgets import TaskView
 from utils.paths import resolve_path
 from utils.files import load_text_file, parse_statistic_file
@@ -52,7 +54,16 @@ class Task2(TaskView):
                                             "n'i = p_i*n", "(n'i - ni)^2",
                                             "(n'i - ni)^2 / n'i"
                                             ])
+        self.__load_images()
         self.prepare_plots()
+
+    def __load_images(self):
+        self.main_parameters_formulas.setPixmap(QPixmap(resolve_path('res/images/lab6/main_parameters.png')))
+        self.a_param.setPixmap(QPixmap(resolve_path('res/images/lab6/a_param.png')))
+        self.b_param.setPixmap(QPixmap(resolve_path('res/images/lab6/b_param.png')))
+        self.densityLabel.setPixmap(QPixmap(resolve_path('res/images/lab6/evenly_density.png')))
+        self.pi_evenly.setPixmap(QPixmap(resolve_path('res/images/lab6/pi_evenly.png')))
+        self.observed_value.setPixmap(QPixmap(resolve_path('res/images/lab6/observed_value.png')))
 
     def prepare_plots(self):
         lt = QVBoxLayout()
@@ -200,7 +211,7 @@ class Task2(TaskView):
                 self.checkResult_label.setText("ГИПОТЕЗА ОТВЕРГНУТА")
             else:
                 self.checkResult_label.setStyleSheet("color: green; font-size: 24px")
-                self.checkResult_label.setText("ГИПОТЕЗА НЕ ОТВЕРГНУТА")
+                self.checkResult_label.setText("ГИПОТЕЗА ПРИНЯТА")
 
     def interval_selected(self, index):
         interval = self.continuous_data.intervals[index]

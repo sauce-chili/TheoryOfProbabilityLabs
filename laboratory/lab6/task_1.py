@@ -1,3 +1,5 @@
+from PyQt5.QtGui import QPixmap
+
 from utils.widgets import TaskView
 from utils.paths import resolve_path
 from utils.files import load_text_file, parse_statistic_file
@@ -30,7 +32,7 @@ class Task1(TaskView):
         self._task_number: int = task_number
         self.currentFile = None
         self.data = None
-        self.chi_table = ChiTable() 
+        self.chi_table = ChiTable()
 
         uic.loadUi(resolve_path('ui/lab_6_task_1.ui'), self)
         self.openFile.clicked.connect(self.file_load_signal)
@@ -43,10 +45,19 @@ class Task1(TaskView):
 
         self.table.setRowCount(7)
         self.table.setVerticalHeaderLabels(['xi; xi+1', 'ni', 'ωi', 'ci',
-                                             "n'i = p_i*n", "(n'i - ni)^2", 
-                                             "(n'i - ni)^2 / n'i"
-                                             ])
+                                            "n'i = p_i*n", "(n'i - ni)^2",
+                                            "(n'i - ni)^2 / n'i"
+                                            ])
+        self.__load_images()
         self.prepare_plots()
+
+    def __load_images(self):
+        self.main_parameters_formulas.setPixmap(QPixmap(resolve_path('res/images/lab6/main_parameters.png')))
+        self.avg_selected_formula.setPixmap(QPixmap(resolve_path('res/images/lab6/avg_x.png')))
+        self.sigma_formula.setPixmap(QPixmap(resolve_path('res/images/lab6/sigma.png')))
+        self.densityLabel.setPixmap(QPixmap(resolve_path('res/images/lab6/normal_density.png')))
+        self.pi_normal_formula.setPixmap(QPixmap(resolve_path('res/images/lab6/pi_normal.png')))
+        self.observed_value.setPixmap(QPixmap(resolve_path('res/images/lab6/observed_value.png')))
 
     def prepare_plots(self):
         layout = QVBoxLayout()
@@ -74,8 +85,9 @@ class Task1(TaskView):
             interval = interval.text()
 
             if ';' not in interval:
-                raise ValueError('Неверно указан интервал. Отсутствует ; между границами ' + str(i + 1) + '-го интервала')
-            
+                raise ValueError(
+                    'Неверно указан интервал. Отсутствует ; между границами ' + str(i + 1) + '-го интервала')
+
             left, right = interval.replace(' ', '').replace(',', '.').split(';')
             data.intervals.append([float(left), float(right)])
 
@@ -87,7 +99,7 @@ class Task1(TaskView):
 
         return process_continuous_intervals(data)
 
-    def load_data(self): 
+    def load_data(self):
         interval_count = self.intervalCount.value()
 
         if not self.manualInput.isChecked():
@@ -104,7 +116,7 @@ class Task1(TaskView):
                 return None
 
         self.continuous_data = continuous_data
-        
+
         self.a = a = continuous_data.x_v
         self.sigma = sigma = continuous_data.sigma
 
@@ -173,14 +185,14 @@ class Task1(TaskView):
 
         self.intervals_combobox.clear()
         self.intervals_combobox.addItems(list(map(lambda x: f"[{x[0]}, {x[1]})", continuous_data.intervals)))
-    
+
     def significance_level_changed(self, significance_level):
         k = self.intervalCount.value() - 3
         # k = m - 3 только для нормального распределения, у других распределений другая формула
         if k > 0 and self.sigma:
             chi2_crit = round(chi2.ppf(1 - significance_level, k), 5)
             chi2_exp = round(normal_chi2(self.intervalCount.value(), self.a, self.sigma, self.continuous_data), 5)
-        
+
             self.k_label.setText(str(k))
             self.chi2_label.setText(str(chi2_crit))
             self.chi2_exp_label.setText(str(chi2_exp))
@@ -190,14 +202,14 @@ class Task1(TaskView):
                 self.checkResult_label.setText("ГИПОТЕЗА ОТВЕРГНУТА")
             else:
                 self.checkResult_label.setStyleSheet("color: green; font-size: 24px")
-                self.checkResult_label.setText("ГИПОТЕЗА НЕ ОТВЕРГНУТА")
+                self.checkResult_label.setText("ГИПОТЕЗА ПРИНЯТА")
 
     def interval_selected(self, index):
         interval = self.continuous_data.intervals[index]
         if self.sigma:
             self.prob_label.setText(str(
                 round(normal_theorethical_probability(interval, self.a, self.sigma), 5)))
-    
+
     def file_load_signal(self):
         self.file_input_activate()
         load_text_file(self)
