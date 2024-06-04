@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1253</width>
-    <height>870</height>
+    <width>1171</width>
+    <height>795</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,6 +46,7 @@
      <property name="font">
       <font>
        <pointsize>14</pointsize>
+       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -72,6 +73,7 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -182,7 +184,7 @@
        <x>10</x>
        <y>260</y>
        <width>1121</width>
-       <height>26</height>
+       <height>27</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_56">
@@ -251,7 +253,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -353,20 +355,10 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="continuous_rel_histpolygon">
+     <widget class="QWidget" name="distribution_polygon">
       <attribute name="title">
        <string>Многоугольник распределения</string>
       </attribute>
-      <widget class="QWidget" name="distribution_polygon" native="true">
-       <property name="geometry">
-        <rect>
-         <x>9</x>
-         <y>9</y>
-         <width>1101</width>
-         <height>451</height>
-        </rect>
-       </property>
-      </widget>
      </widget>
      <widget class="QWidget" name="continuous_parameters">
       <attribute name="title">
