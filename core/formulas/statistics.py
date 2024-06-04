@@ -31,6 +31,7 @@ class ContinuousData:
     S: float
     h: float
 
+
 @dataclass
 class DistributionData:
     X: List[int]
@@ -129,12 +130,14 @@ def calculate_W(N=[]):
 
     return W
 
+
 def calculate_Xv(middles=[], N=[]):
     Xv = 0
     for i, xi in enumerate(middles):
         Xv += xi * N[i]
     Xv /= sum(N)
     return Xv
+
 
 def calculate_Dv(Xv, N=[], middles=[]):
     Dv = 0
@@ -146,6 +149,7 @@ def calculate_Dv(Xv, N=[], middles=[]):
 
 def calculate_sigma(D):
     return sqrt(D)
+
 
 def process_discrete_data(data) -> DiscreteData:
     counter = Counter(data)
@@ -177,6 +181,7 @@ def process_discrete_data(data) -> DiscreteData:
     S /= sum_n - 1
     S = sqrt(S)
     return DiscreteData(list(x_n.keys()), x_n, x_w, sum_n, Xv, sigma, Dv, S)
+
 
 def calculate_S(Xv, N=[], middles=[]):
     S_square = 0
@@ -220,8 +225,8 @@ def process_continuous_intervals(data_split_by_intervals: ContinuousData) -> Con
         length_of_interval,
     )
 
-def process_distribution_data(currentData: DistributionData) -> DistributionData:
 
+def process_distribution_data(currentData: DistributionData) -> DistributionData:
     # Мат ожидание
     M = calculate_Xv(currentData.X, currentData.P)
 
@@ -243,23 +248,22 @@ def process_distribution_data(currentData: DistributionData) -> DistributionData
         sigma,
     )
 
-def calculate_dispersion(M, X = [], P = []):
-    X_square = []
 
-    for x in X:
-        X_square.append(x**2)
+def calculate_dispersion(M, X=[], P=[]):
+    X_square = [x ** 2 for x in X]
 
-    M_square_x = calculate_Xv(X, P)
+    M_square_x = calculate_Xv(X_square, P)
 
-    return (M_square_x - M**2)
+    return M_square_x - M ** 2
 
-def find_M0(X = [], P = []) -> []:
+
+def find_M0(X=[], P=[]) -> []:
     M0 = []
-    max_value = max(P);
+    max_value = max(P)
 
-    for x in X:
-        if x == max_value:
-            M0.append(x)
+    for i in range(len(X)):
+        if P[i] == max_value:
+            M0.append(X[i])
 
     return M0
 
@@ -362,7 +366,8 @@ def process_discrete_plot_data(discrete_data: DiscreteData):
 
     return plot_data
 
-def process_discrete_plot_data(distribution_data: DistributionData):
+
+def process_distribution_plot_data(distribution_data: DistributionData):
     # Эмпирическая функция
     f = {'lines': [], 'dotsx': [], 'dotsy': []}
     plot_data = {}
@@ -374,7 +379,7 @@ def process_discrete_plot_data(distribution_data: DistributionData):
     line = [[distribution_data.X[0] - intlen, distribution_data.X[0]], [0, 0]]
     f['lines'].append(line)
 
-    counter = list(distribution_data.P.values())[0]
+    counter = list(distribution_data.P)[0]
     for i in range(1, k):
         newstr = ''
         newstr += (
@@ -394,7 +399,7 @@ def process_discrete_plot_data(distribution_data: DistributionData):
         f['dotsx'].append(distribution_data.X[i - 1])
         f['dotsy'].append(counter)
 
-        counter += list(distribution_data.P.values())[i]
+        counter += list(distribution_data.P)[i]
         func += newstr + '\n'
 
     func += '1,\tпри x >= ' + str(distribution_data.X[k - 1])
@@ -411,6 +416,7 @@ def process_discrete_plot_data(distribution_data: DistributionData):
     plot_data['func'] = f
 
     return plot_data
+
 
 def integrand(x):
     return exp(-((x ** 2) / 2))
@@ -430,9 +436,6 @@ def process_normal_density(a, sigma):
     x = [i for i in range(int(a) - 50, int(a) + 50)]
     y = [density(xi, a, sigma) for xi in x]
     return x, y
-
-def distribution_function_visual():
-    a
 
 # Считает наблюдаемое значение критерия
 def normal_chi2(m, a, sigma, data: ContinuousData):
@@ -460,8 +463,10 @@ def prepare_evenly_process_density_plots(a, b, intervals=[]):
     y = [density for xi in x]
     return x, y
 
-def prepare_distribution_polygon_plots(X = [], P = []):
+
+def prepare_distribution_polygon_plots(X=[], P=[]):
     return X, P
+
 
 def theoretical_frequencies_of_evenly(N_total, a, b, intervals=[]):
     n = []
