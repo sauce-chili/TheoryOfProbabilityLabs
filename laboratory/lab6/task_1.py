@@ -243,7 +243,6 @@ class Task1(TaskView):
         self.helpText.setText(
             'Укажите количество интервалов, а после введите '
             'значения xi и ni и нажмите "Рассчитать". '
-            'Границы интервалов должны разделяться ";"'
         )
 
     def interval_count_changed(self):
