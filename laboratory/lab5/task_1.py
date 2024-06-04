@@ -9,7 +9,6 @@ from traceback import print_exc
 
 from core.formulas.statistics import process_discrete_data, process_discrete_plot_data
 
-
 class Task1(TaskView):
     def __init__(self, task_number: int, parent):
         super().__init__(parent)
@@ -47,16 +46,16 @@ class Task1(TaskView):
 
         try:
             self.data = parse_statistic_file(self.currentFile)
-            discete_data = process_discrete_data(self.data)
-            plot_data = process_discrete_plot_data(discete_data)
-            k = len(discete_data.X)
+            discrete_data = process_discrete_data(self.data)
+            plot_data = process_discrete_plot_data(discrete_data)
+            k = len(discrete_data.X)
             table = self.table
             table.setColumnCount(k)
 
             for i in range(k):
-                N = list(discete_data.x_n.values())
-                W = list(discete_data.x_w.values())
-                table.setItem(0, i, QTableWidgetItem(str(discete_data.X[i]) + '\t'))
+                N = list(discrete_data.x_n.values())
+                W = list(discrete_data.x_w.values())
+                table.setItem(0, i, QTableWidgetItem(str(discrete_data.X[i]) + '\t'))
                 table.setItem(1, i, QTableWidgetItem(str(N[i]) + '\t'))
                 table.setItem(2, i, QTableWidgetItem(str(round(W[i], 3)) + '\t'))
 
@@ -65,10 +64,10 @@ class Task1(TaskView):
             # Основные харрактеристики
 
             self.varSeries.setText("; ".join(map(lambda x: str(x).replace(".", ","), sorted(self.data))))
-            self.xv_label.setText(str(round(discete_data.x_v, 5)))
-            self.dv_label.setText(str(round(discete_data.D_v, 5)))
-            self.sigma_v_label.setText(str(round(discete_data.sigma, 5)))
-            self.s_label.setText(str(round(discete_data.S, 5)))
+            self.xv_label.setText(str(round(discrete_data.x_v, 5)))
+            self.dv_label.setText(str(round(discrete_data.D_v, 5)))
+            self.sigma_v_label.setText(str(round(discrete_data.sigma, 5)))
+            self.s_label.setText(str(round(discrete_data.S, 5)))
 
             # Эмпирическая функция
             self.functionText.setPlainText(plot_data['F*'])
@@ -77,11 +76,11 @@ class Task1(TaskView):
             # Полигон частот и относительных частот
             self.freq_polygon_plot.set_x_gap(None)
             self.relfreq_polygon_plot.set_x_gap(None)
-            if discete_data.X[0] > 100:
-                self.freq_polygon_plot.set_x_gap(round(discete_data.X[0] - (discete_data.X[0] / 4), 2))
-                self.relfreq_polygon_plot.set_x_gap(round(discete_data.X[0] - (discete_data.X[0] / 4), 2))
-            self.freq_polygon_plot.display(discete_data.X, discete_data.x_n.values(), 'xi', 'ni')
-            self.relfreq_polygon_plot.display(discete_data.X, discete_data.x_w.values(), 'xi', 'ωi',
+            if discrete_data.X[0] > 100:
+                self.freq_polygon_plot.set_x_gap(round(discrete_data.X[0] - (discrete_data.X[0] / 4), 2))
+                self.relfreq_polygon_plot.set_x_gap(round(discrete_data.X[0] - (discrete_data.X[0] / 4), 2))
+            self.freq_polygon_plot.display(discrete_data.X, discrete_data.x_n.values(), 'xi', 'ni')
+            self.relfreq_polygon_plot.display(discrete_data.X, discrete_data.x_w.values(), 'xi', 'ωi',
                                               color='#16db16')
         except Exception as e:
             print_exc()
