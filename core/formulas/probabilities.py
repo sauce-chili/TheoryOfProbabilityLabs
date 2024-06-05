@@ -1,5 +1,5 @@
 from functools import reduce
-from math import sqrt, pi, exp
+from math import sqrt, pi, exp, factorial
 
 from core.formulas.combinatorics import (
     combinations_without_rep as C,
@@ -31,3 +31,7 @@ def local_moivre_laplace(x: float, n: int, p: float) -> float:
 
 def gauss(x: float) -> float:
     return (1 / sqrt(2 * pi)) * exp(-((x ** 2) / 2))
+
+
+def poisson(x: int, a: float) -> float:
+    return (a ** x) * exp(-a) / factorial(x)

@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QMessageBox, QVBoxLayout, QTableWidgetItem
 from utils.plots import *
 from traceback import print_exc
 from core.formulas.statistics import *
+from PyQt5.QtGui import QPixmap
 
 from PyQt5.QtWidgets import (
     QMessageBox,
@@ -21,41 +22,45 @@ class Task1(TaskView):
         super().__init__(parent)
         self._task_number: int = task_number
         self.data = None
-
         uic.loadUi(resolve_path('ui/lab_4_task_1.ui'), self)
+        self.__load_images()
         self.manual_input()
         self.calculateButton.clicked.connect(self.load_data)
         self.table.setRowCount(2)
         self.table.setVerticalHeaderLabels(['xi', 'pi'])
         self.prepare_plots()
 
-    def prepare_plots(self):  # o
+    def prepare_plots(self):
         lt = QVBoxLayout()
         self.distribution_polygon_plot = Polygon(self, name='Многоугольник распределения')  # ака полигон частот
         lt.addWidget(self.distribution_polygon_plot, alignment=Qt.Alignment())
         self.distribution_polygon.setLayout(lt)
-
         lt = QVBoxLayout()
         self.discrete_function_graph = Function(self, name='Эмпирическая функция распределения')
         lt.addWidget(self.discrete_function_graph, alignment=Qt.Alignment())
         self.discrete_function_plot.setLayout(lt)
+
+    def __load_images(self):
+        self.expected_value_pic.setPixmap(QPixmap(resolve_path('res/images/lab4/expected_value.png')))
+        self.dispersion_pic.setPixmap(QPixmap(resolve_path('res/images/lab4/dispersion.png')))
+        self.sigma_pic.setPixmap(QPixmap(resolve_path('res/images/lab4/sigma.png')))
 
     def load_data(self):
         x_count = self.xCount.value()
 
         try:
             distribution_data = self.read_manual_data()
+
+            if (sum(distribution_data.P) > 1.05 or sum(distribution_data.P) < 0.95):
+                raise ValueError(f'Вероятность не равна приблизительно единице: {sum(distribution_data.P)}')
         except ValueError as err:
             QMessageBox.warning(self, 'Ошибка!', str(err))
             return None
 
-        self.distribution_data = distribution_data
+        # self.distribution_data = distribution_data
 
         table = self.table
         table.setColumnCount(x_count)
-
-        if (sum(distribution_data.P) > 1.05 or sum(distribution_data.P) < 0.95):
-            raise ValueError('Вероятность не равна приблизительно единице:  ' + sum(distribution_data.P))
 
         for i in range(x_count):
             X = distribution_data.X[i]
@@ -111,7 +116,7 @@ class Task1(TaskView):
         self.table.setEditTriggers(QAbstractItemView.AllEditTriggers)
         self.helpText.setText(
             'Укажите количество значений, а после введите '
-            'их вероятнсоти pi и нажмите "Рассчитать". '
+            'их вероятности pi и нажмите "Рассчитать". '
         )
 
     def values_count_changed(self):

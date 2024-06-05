@@ -3,6 +3,7 @@ from math import sqrt, erf, pi, exp, ceil, floor
 from dataclasses import dataclass
 from typing import Dict, List
 from scipy.integrate import quad as oIntegral
+from core.formulas.probabilities import poisson
 
 
 # 🗿
@@ -37,6 +38,16 @@ class DistributionData:
     X: List[int]
     P: List[float]
     M0: List[int]
+    M: float
+    D: float
+    sigma: float
+
+
+@dataclass
+class PoissonData:
+    X: list[int]
+    P: list[float]
+    M0: list[int]
     M: float
     D: float
     sigma: float
@@ -316,6 +327,31 @@ def process_continuous_plot_data(data: ContinuousData):
     return plot_data
 
 
+####################################################################
+def process_poisson_data(n_count: int, prob: float) -> PoissonData:
+    # Мат ожидание
+    M = D = n_count * prob
+    sigma = sqrt(D)
+
+    a = M
+    M0 = [m for m in range(0 if ceil(a - 1) < 0 else ceil(a - 1), floor(a + 1))]
+
+    X = [x for x in range(0, n_count + 1)]
+    P = [poisson(x=x, a=a) for x in X]
+
+    return PoissonData(
+        X=X,
+        P=P,
+        M=M,
+        D=D,
+        sigma=sigma,
+        M0=M0
+    )
+
+
+#####################################################
+
+
 def process_discrete_plot_data(discrete_data: DiscreteData):
     # Эмпирическая функция
     f = {'lines': [], 'dotsx': [], 'dotsy': []}
@@ -367,13 +403,13 @@ def process_discrete_plot_data(discrete_data: DiscreteData):
     return plot_data
 
 
-def process_distribution_plot_data(distribution_data: DistributionData):
+def process_distribution_plot_data(distribution_data: DistributionData | PoissonData):
     # Эмпирическая функция
     f = {'lines': [], 'dotsx': [], 'dotsy': []}
     plot_data = {}
     k = len(distribution_data.X)
 
-    func = '0,\tпри x < ' + str(distribution_data.X[0]) + '\n'
+    func = '0,\tпри x <= ' + str(distribution_data.X[0]) + '\n'
 
     intlen = 3 * (distribution_data.X[1] - distribution_data.X[0])
     line = [[distribution_data.X[0] - intlen, distribution_data.X[0]], [0, 0]]
@@ -386,7 +422,7 @@ def process_distribution_plot_data(distribution_data: DistributionData):
                 str(round(counter, 2))
                 + ',\tпри '
                 + str(distribution_data.X[i - 1])
-                + ' <= x < '
+                + ' < x <= '
                 + str(distribution_data.X[i])
         )
 
@@ -402,7 +438,7 @@ def process_distribution_plot_data(distribution_data: DistributionData):
         counter += list(distribution_data.P)[i]
         func += newstr + '\n'
 
-    func += '1,\tпри x >= ' + str(distribution_data.X[k - 1])
+    func += '1,\tпри x > ' + str(distribution_data.X[k - 1])
     line = [
         [distribution_data.X[k - 1], distribution_data.X[k - 1] + intlen],
         [counter, counter],
@@ -436,6 +472,7 @@ def process_normal_density(a, sigma):
     x = [i for i in range(int(a) - 50, int(a) + 50)]
     y = [density(xi, a, sigma) for xi in x]
     return x, y
+
 
 # Считает наблюдаемое значение критерия
 def normal_chi2(m, a, sigma, data: ContinuousData):
